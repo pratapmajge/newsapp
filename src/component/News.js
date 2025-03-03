@@ -86,7 +86,7 @@ export class News extends Component {
         <div className="row">
           {this.state.articles.map((element, index) => {
             return (
-              <div className="col-md-4" key={element.url || index}>
+              <div className="col-md-4" key={element.url}>
                 <NewsItem 
                   title={element.title?.substring(0, 45) || "No Title Available"} 
                   description={element.description?.substring(0, 88) || "No Description Available"} 
