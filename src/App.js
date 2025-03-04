@@ -10,7 +10,7 @@ export default class App extends Component {
       <div>
         {/* Hello this is class based rect{this.a} */}
         <NavBar />
-        <News />
+        <News pageSize={6}/>
       </div>
     )
   }
