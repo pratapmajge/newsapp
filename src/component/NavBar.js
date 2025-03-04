@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-
 export class navbar extends Component {
-
 
   render() {
     return (
@@ -19,28 +17,28 @@ export class navbar extends Component {
                   <a className="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 {/* <li className="nav-item">
-                  <a className="nav-link" href="/About">About</a>
+                  <a className="nav-link" rel="noreferrer"  href="/About">About</a>
                 </li> */}
                 <li className="nav-item">
-                  <a className="nav-link" href="/bussiness">Bussiness</a>
+                  <a className="nav-link" rel="noreferrer"  href="/bussiness">Bussiness</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/entertainment">Entertainment</a>
+                  <a className="nav-link" rel="noreferrer"  href="/entertainment">Entertainment</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/general">General</a>
+                  <a className="nav-link" rel="noreferrer"  href="/general">General</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/health">Health</a>
+                  <a className="nav-link" rel="noreferrer"  href="/health">Health</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/science">Science</a>
+                  <a className="nav-link" rel="noreferrer"  href="/science">Science</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/sports">Sports</a>
+                  <a className="nav-link" rel="noreferrer"  href="/sports">Sports</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/technology">Technology</a>
+                  <a className="nav-link" rel="noreferrer"  href="/technology">Technology</a>
                 </li>
               </ul>
             </div>
