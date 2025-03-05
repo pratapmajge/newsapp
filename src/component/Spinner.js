@@ -1,9 +1,9 @@
 import React from 'react'
-import apinner2 from './apinner2.gif'
+import loader from './loader.gif'
 export default function Spinner() {
   return (
     <div className='text-center'>
-      <img src={apinner2} alt='spinner'/>
+      <img src={loader} alt='spinner'/>
     </div>
   )
 }

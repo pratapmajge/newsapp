@@ -94,6 +94,9 @@ export class News extends Component {
                   description={element.description?.substring(0, 88) || "No Description Available"}
                   imgurl={element.urlToImage}
                   newsurl={element.url}
+                  author={element.author}
+                  date={element.publishedAt}
+                  source={element.source.name}
                 />
               </div>
             );
