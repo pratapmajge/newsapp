@@ -1,10 +1,12 @@
 import React from 'react'
 import loader from './loader.gif'
-export default function Spinner() {
+
+const  Spinner = () => {
   return (
     <div className='text-center'>
       <img src={loader} alt='spinner'/>
     </div>
   )
 }
+export default Spinner
 

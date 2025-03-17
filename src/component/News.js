@@ -1,115 +1,76 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react';
 import NewsItem from './NewsItem';
 import Spinner from './Spinner';
-import propTypes from 'prop-types'
+import propTypes from 'prop-types';
 
-export class News extends Component {
-  static defaultProps = {
-    country: 'in',
-    pageSize: 6,
-    category: 'general'
-  }
+const News = (props) => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
-  static propTypes = {
-    country: propTypes.string,
-    pageSize: propTypes.number,
-    category: propTypes.string
-  }
-  constructor() {
-    super();
-    console.log('I am constructor');
-    this.state = {
-      articles: [],
-      loading: false,
-      page: 1,
+  console.log("News API Key:", props.apikey); // Debugging
 
-    }
-  }
-
-  async componentDidMount() {
+  const updateNews = async () => {
     try {
-      console.log("cdm")
-      let api = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=c5268d7236714c36ae2af1c8f232f569&pageSize=${this.props.pageSize}`
-      this.setState({ loading: true })
-      let data = await fetch(api)
-      let parsedData = await data.json()
-      // console.log(parsedData)
-      // this.loading({loading:false})
-      this.setState({
-        articles: parsedData.articles,
-        totalResults: parsedData.totalResults,
-        loading: false
-      })
+      setLoading(true);
+      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pageSize}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+
+      if (parsedData.status === "error") {
+        console.error("API Error:", parsedData.message);
+      } else {
+        setArticles(parsedData.articles || []);
+        setTotalResults(parsedData.totalResults || 0);
+      }
+
+      setLoading(false);
     } catch (error) {
-      console.log(error)
-      this.setState({ articles: [] })
+      console.error("Fetch Error:", error);
+      setLoading(false);
     }
-  }
+  };
 
-  handlenextclick = async () => {
-    console.log("next")
-    if (!(this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize))) {
-      let api = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&country=${this.props.category}&apiKey=c5268d7236714c36ae2af1c8f232f569&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`
-      this.setState({ loading: true })
-      let data = await fetch(api)
-      let parsedData = await data.json()
-      // console.log(parsedData)
-      // this.setState({loading:false})
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedData.articles,
-        loading: false
-      })
-    }
-  }
+  useEffect(() => {
+    updateNews();
+  }, [page]);
 
-  handlepreviousclick = async () => {
-    console.log("previous")
-    let api = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&country=${this.props.category}&apiKey=c5268d7236714c36ae2af1c8f232f569&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`
-    this.setState({ loading: true })
-    let data = await fetch(api)
-    let parsedData = await data.json()
-    // console.log(parsedData)
-
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-      loading: false
-    })
-  }
-
-
-  render() {
-    return (
-      <div className="container my-4">
-        <h1 className="m-4 text-center">NewsApp - Top Headlines</h1>
-        {/* </> */}
-        {this.state.loading && <Spinner />}
-        <div className="row">
-          {!this.state.loading && this.state.articles.map((element, index) => {
-            return (
-              <div className="col-md-4" key={element.url}>
-                <NewsItem
-                  title={element.title?.substring(0, 45) || "No Title Available"}
-                  description={element.description?.substring(0, 88) || "No Description Available"}
-                  imgurl={element.urlToImage}
-                  newsurl={element.url}
-                  author={element.author}
-                  date={element.publishedAt}
-                  source={element.source.name}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div className='justify-content-between d-flex'>
-          <button disabled={this.state.page <= 1} onClick={this.handlepreviousclick} type='button' className='btn btn-dark'>&larr; Previous</button>
-          <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} type='button' onClick={this.handlenextclick} className='btn-dark btn'>Next &rarr;</button>
-        </div>
+  return (
+    <div className="container my-4">
+      <h1 className="m-4 text-center">NewsApp - Top Headlines</h1>
+      {loading && <Spinner />}
+      <div className="row">
+        {!loading &&
+          articles.map((element) => (
+            <div className="col-md-4" key={element.url}>
+              <NewsItem
+                title={element.title?.substring(0, 45) || "No Title Available"}
+                description={element.description?.substring(0, 88) || "No Description Available"}
+                imgurl={element.urlToImage}
+                newsurl={element.url}
+                author={element.author}
+                date={element.publishedAt}
+                source={element.source.name}
+              />
+            </div>
+          ))}
       </div>
-    );
-  }
+    </div>
+  );
+};
 
-}
+News.defaultProps = {
+  country: 'us',
+  pageSize: 6,
+  category: 'general',
+};
+
+News.propTypes = {
+  country: propTypes.string,
+  pageSize: propTypes.number,
+  category: propTypes.string,
+  apikey: propTypes.string.isRequired,
+};
 
 export default News;
